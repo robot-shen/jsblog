@@ -1,4 +1,6 @@
 # 博客实战记录
+管理员：jinshen
+pwd：jinshen123
 ## 环境配置
 #### 安装virtualenv
 参考链接：[windows下搭建virtualenv、virtualenvwrapper虚拟环境](https://blog.csdn.net/shaququ/article/details/54292043)
@@ -47,5 +49,44 @@
 > pip install -r requirements.txt
 
 ## 配置GitHub
+为了防止使用git时给自己挖坑，建议初始化项目时：
+1. 先建立远程仓库，然后clone到本地，再进行其他操作
+2. 如果先建立本地仓库，后建立远程仓库，确保远程库为空，这样push的时候不会有冲突文件
+3. 有了冲突文件，就要解决冲突。先把远程pull过来，然后合并解决冲突，再push
+
+
+## 迁移数据库
+
+
+
+* 最开始makemigrations时，有如下报错：
+
+应该是Django没能识别出我引用的User模块导致
+
+```
+ERRORS:
+blog.Article.author: (fields.E300) Field defines a relation with model 'User', which is either not installed, or is abstract.
+
+blog.Article.author: (fields.E307) The field blog.Article.author was declared with a lazy reference to 'blog.user', but app 'blog' doesn't provide model 'user'.
+```
+* 知识点：关于Fornkey参数值on-delete
+
+> [on-delete参数详解](https://blog.csdn.net/kuangshp128/article/details/78946316)
+
+* 时区转换
+> [链接](http://www.jb51.net/article/90802.htm)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
