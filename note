@@ -1,0 +1,51 @@
+# 博客实战记录
+## 环境配置
+#### 安装virtualenv
+参考链接：[windows下搭建virtualenv、virtualenvwrapper虚拟环境](https://blog.csdn.net/shaququ/article/details/54292043)
+> python3 -m pip install virtualenv
+
+#### 安装virtualenvwrapper
+* 命令行安装
+> python3 -m pip install virtualenvwrapper-win
+
+* 设置WORK_HOME环境变量
+> 在win环境变量里，新建一个变量：
+变量名：WORK_HOME
+变量值：C:\Py_Vir_Env（以后虚拟环境存放的路径）
+
+![Alt text](https://imghosting-1256211031.cos.ap-beijing.myqcloud.com/note/jsblog01.png
+ "不要设错了")
+
+#### 检测及Django安装
+* 进入cmd
+> mkvirtualenv forblog
+这样名为forblog的虚拟环境就建立好了
+文件夹在C:\Py_Vir_Env
+
+*  查看安装的所有虚拟环境
+> workon
+
+* 进入虚拟环境
+> workon forblog
+
+* 查看虚拟环境的pip包
+> pip list
+
+* 安装Django
+> pip install django==1.10.6 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+* 退出虚拟环境
+> deactivate
+
+## pycharm操作
+1. 新建Django工程
+2. 配置虚拟环境应用
+3. 在Terminal里边验证是不是虚拟环境
+>(forblog) D:\BaiduYunDownload\Learn\jsblog>
+4. 把项目依赖文件放到工程目录
+5. 安装依赖
+> pip install -r requirements.txt
+
+## 配置GitHub
+
+
