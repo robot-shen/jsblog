@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect,HttpResponse,get_object_or_404
 from blog import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -22,4 +22,11 @@ def test(request):
 
 def index(request):
     article_list = models.Article.objects.all().order_by('created_time')
-    return render(request,"blog/index.html",context={'article_list':article_list})
+    if request.method == "GET":
+        return render(request,"blog/index.html",context={'article_list':article_list})
+    else:
+        return HttpResponse('askluf ')
+
+def detail(request, pk):
+    article = get_object_or_404(models.Article, pk=pk)
+    return render(request, 'blog/detail.html', context={'article': article})

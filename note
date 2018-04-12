@@ -90,10 +90,76 @@ USE_TZ = True，开启Django的时区功能
 模板处理时会自动使用settings.TIME_ZONE帮我们转换
 其他需要转换的场合，也可以自行处理（如引用pytz模块）
 
+## Django admin使用
+### 配置admin
+```
+from django.contrib import admin
+from .models import Post, Category, Tag
 
+admin.site.register(Article)
+admin.site.register(Category)
+admin.site.register(Tag)
+```
+*在这又遇到Django谎报军情 说是Article已注册过，重启就好了*
 
+* 可以使用以下三个库中的其中一个美化django-admin
 
+1、[star 1426 ](https://github.com/django-admin-bootstrapped/django-admin-bootstrapped)
+2、[star 1507 ](https://github.com/darklow/django-suit)
+3、[star 2321 ](https://github.com/sehmaschine/django-grappelli)
+### admin初步自定制
+在admin.py里，写如下内容
+``` python
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ['title', 'created_time', 'modified_time', 'category', 'author']
 
+admin.site.register(Article,ArticleAdmin)
+```
+
+## 博客详情页
+* 关于url的知识点
+
+**url的几个参数，正则，分组**
+url(regex, view, kwargs=None, name=None)
+```
+urlpatterns = [
+    url(正则表达式1, views视图函数1，参数1，别名1),
+    url(正则表达式2, views视图函数2，参数2，别名2),
+]
+```
+
+* URL的无命名分组：分组直接指向函数的参数值
+*url(r'^articles/([0-9]{4})/$', views.year_archive)*
+
+* URL的有命名分组，Named groups 可以做分组的同时捎带着起个名
+*'(?P<id>\d{3})/(?P<name>\w{3})'   >>>   'weeew34ttt123/ooo'*
+
+### blog/url.py中
+```
+app_name = 'blog'
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'^article/(?P<pk>[0-9]+)/$', views.detail, name='detail'),
+]
+```
+
+**app_name='blog' 告诉 Django 这个 urls.py 模块是属于 blog 应用的，这种技术叫做视图函数命名空间**
+*url(r'^article/(?P<pk>[0-9]+)/$',views.detail,name='detail')*
+例如 /article/3/  请求将调用函数 views.detail(request, pk='3')
+
+**注意：**
+1. 此处P为大写，固定用法
+2. 捕获的参数永远是字符串
+3. 若要从URL 中捕获一个值，只需要在它周围放置一对圆括号。
+4. 不需要添加一个前导的反斜杠，因为每个URL 都有。例如，应该是 ^articles  而不是  ^/articles  。
+5. 起别名的目的是在渲染时url能反向解析：
+>是为了让action中的{% url "detail" %}可以顺利的被替换（渲染）成url绑定好的内容
+这样浏览器就能接收到渲染好的代码，直接读出 action:/"article/3/"
+以保证form表单能提交到正确的路径（即该url绑定的那个函数内）
+
+* from django.urls import reverse
+
+###
 
 
 
