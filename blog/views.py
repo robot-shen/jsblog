@@ -10,11 +10,15 @@ import pytz
 
 
 def test(request):
+    # user = User.objects.create(username='jinshen')
     user = User.objects.get(id=1)
+    # c = models.Category.objects.create(name='Linux')
     c = models.Category.objects.get(id=1)
 
     # p = models.Article(title='title test', body='body test',created_time=timezone.now(), modified_time=timezone.now(),
     #                    category=c, author=user)
+    # p.save()
     p = models.Article.objects.filter(id=1).values()[0]
     print(p['created_time'].strftime("%Y-%m-%d %H:%M:%S %Z"))
     return HttpResponse(000)
+

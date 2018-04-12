@@ -35,7 +35,7 @@ class Article(models.Model):
     excerpt = models.CharField(max_length=200, blank=True)#摘要
     category = models.ForeignKey("Category")
     tags = models.ManyToManyField("Tag",blank=True)
-    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    author = models.ForeignKey(User)
 
     def __str__(self):
         return self.title

@@ -75,8 +75,13 @@ blog.Article.author: (fields.E307) The field blog.Article.author was declared wi
 
 * 时区转换
 > [链接](http://www.jb51.net/article/90802.htm)
+在Django的配置文件settings.py中，有两个配置参数是跟时间与时区有关的，分别是TIME_ZONE和USE_TZ
 
-
+USE_TZ = True，开启Django的时区功能
+> [django时区相关](https://blog.csdn.net/w6299702/article/details/38782607)
+建议是：后端处理的时候统一用UTC时间，忽略本地时间的存在
+模板处理时会自动使用settings.TIME_ZONE帮我们转换
+其他需要转换的场合，也可以自行处理（如引用pytz模块）
 
 
 
