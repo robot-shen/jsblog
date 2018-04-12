@@ -1,6 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.shortcuts import HttpResponse
+from django.shortcuts import render,redirect,HttpResponse
 from blog import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -22,3 +20,6 @@ def test(request):
     print(p['created_time'].strftime("%Y-%m-%d %H:%M:%S %Z"))
     return HttpResponse(000)
 
+def index(request):
+    article_list = models.Article.objects.all().order_by('created_time')
+    return render(request,"blog/index.html",context={'article_list':article_list})

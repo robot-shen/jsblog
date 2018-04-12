@@ -54,6 +54,13 @@ pwd：jinshen123
 2. 如果先建立本地仓库，后建立远程仓库，确保远程库为空，这样push的时候不会有冲突文件
 3. 有了冲突文件，就要解决冲突。先把远程pull过来，然后合并解决冲突，再push
 
+在default setting里边 >>> 版本控制 >>> Git
+Path to Git:选择git.exe路径
+SSH exeutable：选Native，其他默认即可
+注意：选Native是应用本地git bash已经设置好的ssh
+选built-in则是使用内建的ssh，这个内建是需要你输入name email，pycharm替你生成的
+
+还是Native灵活性比较高，依赖git.exe的git软件都可以用
 
 ## 迁移数据库
 
