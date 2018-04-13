@@ -5,6 +5,7 @@ from .models import Article,Category,Tag
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ['title', 'created_time', 'modified_time', 'category', 'author']
 
+#todo "admin自定制学习"
 admin.site.register(Article,ArticleAdmin)
 admin.site.register(Category)
 admin.site.register(Tag)

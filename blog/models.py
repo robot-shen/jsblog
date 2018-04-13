@@ -41,6 +41,7 @@ class Article(models.Model):
         verbose_name_plural = verbose_name
 
     def get_absolute_url(self):
+        #todo:没用过这个reverse函数
         return reverse('blog:detail', kwargs={'pk': self.pk})
 
     def __str__(self):

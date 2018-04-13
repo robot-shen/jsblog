@@ -85,10 +85,11 @@ blog.Article.author: (fields.E307) The field blog.Article.author was declared wi
 在Django的配置文件settings.py中，有两个配置参数是跟时间与时区有关的，分别是TIME_ZONE和USE_TZ
 
 USE_TZ = True，开启Django的时区功能
-> [django时区相关](https://blog.csdn.net/w6299702/article/details/38782607)
-建议是：后端处理的时候统一用UTC时间，忽略本地时间的存在
-模板处理时会自动使用settings.TIME_ZONE帮我们转换
-其他需要转换的场合，也可以自行处理（如引用pytz模块）
+ * [django时区相关链接](https://blog.csdn.net/w6299702/article/details/38782607)  
+>建议处理方式：  
+>>后端处理的时候统一用UTC时间，忽略本地时间的存在  
+模板处理时会自动使用settings.TIME_ZONE帮我们转换  
+其他需要转换的场合，也可以自行处理（如引用pytz模块）  
 
 ## Django admin使用
 ### 配置admin
@@ -153,18 +154,54 @@ urlpatterns = [
 3. 若要从URL 中捕获一个值，只需要在它周围放置一对圆括号。
 4. 不需要添加一个前导的反斜杠，因为每个URL 都有。例如，应该是 ^articles  而不是  ^/articles  。
 5. 起别名的目的是在渲染时url能反向解析：
->是为了让action中的{% url "detail" %}可以顺利的被替换（渲染）成url绑定好的内容
-这样浏览器就能接收到渲染好的代码，直接读出 action:/"article/3/"
-以保证form表单能提交到正确的路径（即该url绑定的那个函数内）
+>是为了让action中的{% url "detail" %}可以顺利的被替换（渲染）成url绑定好的内容  
+这样浏览器就能接收到渲染好的代码，直接读出 action:/"article/3/"  
+以保证form表单能提交到正确的路径（即该url绑定的那个函数内）  
 
 * from django.urls import reverse
 
-###
+### 支持markdown
+```python
+extensions = ['markdown.extensions.extra',
+              'markdown.extensions.codehilite',
+              'markdown.extensions.toc',]
+article.body = markdown.markdown(article.body,extensions)
+```
+> extra 包含好几个扩展  
+> codehilite 实现语法高亮，内部依赖 **Pygments** 模块（需要提前安装好）  
+> toc 允许我们自己生成目录
 
+## 页面侧边栏
+### 模板回顾
+```djangotemplate
+{% load staticfiles %}  # 加载标签库
 
+ {% static %} 模板标签，这个标签帮助我们在模板中引入静态文件  
+ <link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
+ 
+ <form action="{% url "bieming"%}" >
+          <input type="text">
+          <input type="submit"value="提交">
+          {%csrf_token%}
+</form>
 
+{% with hehe='英俊潇洒风流倜傥玉树临风' %} {{ hehe }} {% endwith %}
 
+{% verbatim %}  # 禁止render
+         {{ hello }}
+{% endverbatim %}
+```
+### 自定义tag
+* a、在app中创建templatetags模块(必须的)  
+* b、创建任意 .py 文件，如：my_tags.py  
+* c、在使用自定义simple_tag和filter的html文件中  
+导入之前创建的 my_tags.py ：{% load my_tags %}  # 首行  
+* d、使用simple_tag和filter（如何调用）  
+**自定义filter:** {{ num|filter_multi:2 }}   
+**自定义tag:** {% simple_tag_multi num 5 %}
 
-
-
+注：*filter可以用在if等语句后，simple_tag不可以*
+ 
+ 
+ 
 

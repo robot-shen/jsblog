@@ -11,6 +11,7 @@ from blog import views
 app_name = 'blog'
 urlpatterns = [
     url(r'^$', views.index, name='index'), # 起个别名
+    url(r'^index.html/$', views.index),
     url(r'^article/(?P<pk>[0-9]+)/$', views.detail,
         name='detail')  # Named groups
 ]
