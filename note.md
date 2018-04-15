@@ -84,12 +84,19 @@ blog.Article.author: (fields.E307) The field blog.Article.author was declared wi
 > [链接](http://www.jb51.net/article/90802.htm)
 在Django的配置文件settings.py中，有两个配置参数是跟时间与时区有关的，分别是TIME_ZONE和USE_TZ
 
-USE_TZ = True，开启Django的时区功能
+USE_TZ = True，开启Django的时区功能  
+当 USE_TZ  为 True  时，在过滤之前，datetime字段将转换为当前时区  
+【Django1.8_Cn p906】  
+Django 第一次发布时， TIME_ZONE  设置为  'America/Chicago' ,所以默认时间全是它
+Django 设置 os.environ['TZ']  变量为你在 TIME_ZONE  设置中指定的时区。   
+所以，你的所有视图和模型都将自动在这个时区中运作   
+
  * [django时区相关链接](https://blog.csdn.net/w6299702/article/details/38782607)  
 >建议处理方式：  
 >>后端处理的时候统一用UTC时间，忽略本地时间的存在  
 模板处理时会自动使用settings.TIME_ZONE帮我们转换  
-其他需要转换的场合，也可以自行处理（如引用pytz模块）  
+
+**django 处理时区需要依赖 pytz 这个模块**
 
 ## Django admin使用
 ### 配置admin
@@ -148,6 +155,11 @@ urlpatterns = [
 *url(r'^article/(?P<pk>[0-9]+)/$',views.detail,name='detail')*
 例如 /article/3/  请求将调用函数 views.detail(request, pk='3')
 
+* url(r'^archives/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/$',views.archives,name='archives'),*
+在HTML应用：  
+方法一：href="archives/{{ date.year }}/{{ date.month }}"
+方法二：href="{% url 'blog:archives' date.year date.month %}"  **推荐**
+
 **注意：**
 1. 此处P为大写，固定用法
 2. 捕获的参数永远是字符串
@@ -201,7 +213,45 @@ article.body = markdown.markdown(article.body,extensions)
 **自定义tag:** {% simple_tag_multi num 5 %}
 
 注：*filter可以用在if等语句后，simple_tag不可以*
+
+obj = Article.objects.dates('created_time', 'month', order='DESC')  
+注：obj的值是QuerySet。本质上是个集合，自带去重功能。所以得到的结果是各个月份  
+
+
+
+
+
+
+
+# 笔记：
+* a标签的用法
+## href="URL"的作用
+```html
+<a href="http://baidu.com">超链接</a>  
+<a href="#line22">回到最顶端</a> 锚
+<a href="#">回到最顶端</a>  可以利用这个特性制作右下角的返回顶部按钮
+<a href="css/css1.css">文件链接</a>  
+```
+**注意：**
+```html
+<a href="index.html">首页</a>
+这种写法，二次点击的时候会指向http://127.0.0.1:8000/index.html/index.html
+一定要加上// → <a href="/index.html/">首页</a>
+```
+## js相关
+```JavaScript
+<a href="javascript:;" onclick="js_method()"></a>  
+执行空js代码，且绑定js_method
+
+a href="javascript:void(0);" onclick="js_method()"
+void是一个操作符，void(0)返回undefined，地址不发生跳转，同时绑定js_method
+
+<a href="#" onclick="js_method();return false;"></a>  
+这种方法点击执行了js函数后return false，页面不发生跳转，执行后还是在页面的当前位置。
+```
+
+
  
- 
+
  
 

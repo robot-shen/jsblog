@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 import pytz
 import markdown
+from comments.forms import CommentForm
+
 
 # Create your views here.
 
@@ -23,7 +25,7 @@ def test(request):
 
 
 def index(request):
-    article_list = models.Article.objects.all().order_by('created_time')
+    article_list = models.Article.objects.all()
     if request.method == "GET":
         return render(
             request,
@@ -39,13 +41,35 @@ def detail(request, pk):
                   'markdown.extensions.codehilite',
                   'markdown.extensions.toc', ]
     article.body = markdown.markdown(article.body, extensions)
-    return render(request, 'blog/detail.html', context={'post': article})
+    form = CommentForm()
+    # comment_list = models.Article.objects.get(pk=pk).comment_set
+    comment_list = article.comment_set.all()
+    context = {
+        'post': article,
+        'form': form,
+        'comment_list': comment_list
+    }
+    return render(request, 'blog/detail.html', context=context)
 
 
 def archives(request, year, month):
-    post_list = models.Article.objects.filter(
+    #归档函数，在页面右侧做链接用
+    article_list = models.Article.objects.filter(
         created_time__year=year,
-        created_time__month=month).order_by('-created_time')
-    return render(request, 'blog/index.html', context={'post_list': post_list})
+        created_time__month=month)
+    return render(request, 'blog/index.html', context={'article_list': article_list})
 
+# def category(request,pk):
+#     #分类函数
+#     article_list = models.Article.objects.filter(category__id=pk)
+#     return render(request, 'blog/index.html', context={'article_list': article_list})
 
+def category(request, pk):
+    # 第二种获取方式，引入404界面并且对结果作了排序
+    cate = get_object_or_404(models.Category, pk=pk)
+    #print(cate,type(cate))#习近平 <class 'blog.models.Category'>
+    #根据传入的 pk 值（id 值）从数据库中获取到这个分类，然后根据类对象查找Article
+    article_list = models.Article.objects.filter(category=cate)
+    #print(article_list,type(article_list))
+    #<QuerySet [<Article: 全国货物贸易>, <Article: 南海局势>]> <class 'django.db.models.query.QuerySet'>
+    return render(request, 'blog/index.html', context={'article_list': article_list})

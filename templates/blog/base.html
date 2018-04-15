@@ -9,6 +9,8 @@
     <!-- meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static '/blog/img/favicon.ico' %}"/>
+
 
     <!-- css -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -31,7 +33,8 @@
         <div class="row">
             <div class="col-md-4 col-sm-5 col-xs-8">
                 <div class="logo">
-                    <h1><a href="index.html"><b>泊客小栈</b></a></h1>
+                    <h1><a href="/index.html/"><b>泊客小栈</b></a></h1>
+{#                    TODO：点击两次自加index.html/index.html#}
                 </div>
             </div><!-- col-md-4 -->
             <div class="col-md-8 col-sm-7 col-xs-4">
@@ -44,7 +47,7 @@
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="cl-effect-11"><a href="index.html" data-hover="首页">首页</a></li>
+                            <li class="cl-effect-11"><a href="/index.html/" target="_self" data-hover="首页">首页</a></li>
                             <li class="cl-effect-11"><a href="full-width.html" data-hover="博客">博客</a></li>
                             <li class="cl-effect-11"><a href="about.html" data-hover="关于">关于</a></li>
                             <li class="cl-effect-11"><a href="contact.html" data-hover="联系">联系</a></li>
@@ -95,8 +98,12 @@
                     <ul>
                         {% for date in date_list %}
                             <li>
-                                <a href="#">{{ date.year }}
-                                    年 {{ date.month }} 月</a>
+{#                                <a href="archives/{{ date.year }}/{{ date.month }}">#}
+{#                                    {{ date.year }}年 {{ date.month }} 月#}
+{#                                </a>#}
+                                <a href="{% url 'blog:archives' date.year date.month %}">
+                                    {{ date.year }}年 {{ date.month }} 月
+                                </a>
                             </li>
                         {% empty %}
                             暂无归档！
@@ -110,8 +117,10 @@
                     <ul>
                         {% for category in category_list %}
                             <li>
-                                <a href="#">{{ category.name }} <span
-                                        class="post-count">(12)</span></a>
+                                <a href="{% url 'blog:category' category.id %}">
+                                    {{ category.name }}
+                                    <span class="post-count">(12)</span>
+                                </a>
                             </li>
                         {% empty %}
                             暂无分类！
@@ -148,6 +157,7 @@
                                                         target="_blank" title="模板之家">模板之家</a>
                     - 由<a href="http://zmrenwu.com/" title="网页模板" target="_blank">追梦人物的博客</a>修改
                 </p>
+
             </div>
         </div>
     </div>

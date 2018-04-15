@@ -2,6 +2,7 @@
 {% block main %}
 <main class="col-md-8">
     {% for item in article_list %}
+    <!-- 这里的class值是留的钩子 hook -->
     <article class="post post-{{ post.pk }}">
     <h1 class="entry-title">
         <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>

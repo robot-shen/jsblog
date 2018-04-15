@@ -24,7 +24,9 @@ def get_recent_posts(num=5):
 @register.simple_tag
 #归档模板标签
 def archives():
-    return Article.objects.dates('created_time','month',order='DESC')
+    obj = Article.objects.dates('created_time', 'month', order='DESC')
+    #想通了，obj的值是QuerySet。本质上是个集合，自带去重功能。所以得到的结果是各个月份
+    return obj
 
 @register.simple_tag
 #分类模板标签
