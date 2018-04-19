@@ -37,6 +37,9 @@ def index(request):
 
 def detail(request, pk):
     article = get_object_or_404(models.Article, pk=pk)
+
+    article.increase_views()#阅读量+1
+
     extensions = ['markdown.extensions.extra',
                   'markdown.extensions.codehilite',
                   'markdown.extensions.toc', ]
@@ -72,4 +75,8 @@ def category(request, pk):
     article_list = models.Article.objects.filter(category=cate)
     #print(article_list,type(article_list))
     #<QuerySet [<Article: 全国货物贸易>, <Article: 南海局势>]> <class 'django.db.models.query.QuerySet'>
+    return render(request, 'blog/index.html', context={'article_list': article_list})
+
+def author_article(request,pk):
+    article_list = models.Article.objects.filter(author__id=pk)
     return render(request, 'blog/index.html', context={'article_list': article_list})

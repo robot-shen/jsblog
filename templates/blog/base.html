@@ -103,6 +103,7 @@
 {#                                </a>#}
                                 <a href="{% url 'blog:archives' date.year date.month %}">
                                     {{ date.year }}年 {{ date.month }} 月
+                                    ({% get_archives_num date.year date.month %})
                                 </a>
                             </li>
                         {% empty %}
@@ -119,7 +120,7 @@
                             <li>
                                 <a href="{% url 'blog:category' category.id %}">
                                     {{ category.name }}
-                                    <span class="post-count">(12)</span>
+                                    <span class="post-count">({{ category.num_posts}})</span>
                                 </a>
                             </li>
                         {% empty %}
